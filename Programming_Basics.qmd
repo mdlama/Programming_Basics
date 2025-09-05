@@ -1,6 +1,6 @@
 ---
 title: "Programming basics"
-author: "M. Drew LaMar (modified from [Posit Programming Basics primer](https://github.com/rstudio-education/primers/blob/master/basics/04-Programming-Basics/04-Programming-Basics.Rmd))"
+author: "Modified from [Posit Programming Basics primer](https://github.com/rstudio-education/primers/blob/master/basics/04-Programming-Basics/04-Programming-Basics.Rmd)"
 format: 
   live-html:
     toc: true
