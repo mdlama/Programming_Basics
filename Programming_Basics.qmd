@@ -177,13 +177,14 @@ gradethis::grade_this_code("Good job! `lm()` is R's function for fitting basic l
 :::
 
 ::: {.callout-tip title="Code comments"}
-What do you think the chunk below will return? Run it and see. The result should be nothing. R will not run anything on a line after a `#` symbol. This is useful because it lets you write human readable comments in your code: just place the comments after a `#`. Now delete the `#` and re-run the chunk. You should see a result.
+What do you think the chunk below will return? Run it and see. The result should be only 10. R will not run anything on a line after a `#` symbol. This is useful because it lets you write human readable comments in your code: just place the comments after a `#`. Now delete the `#` and re-run the chunk. You should see both results now.
 
 
 ```{webr}
 #| exercise: code-comments
 #| autorun: FALSE
 # sqrt(962)
+sqrt(100)
 ```
 
 ::: { .solution exercise="code-comments"}
@@ -195,12 +196,7 @@ What do you think the chunk below will return? Run it and see. The result should
 #| exercise: code-comments
 #| solution: TRUE
 sqrt(962)
-```
-
-```{webr}
-#| exercise: code-comments
-#| check: TRUE
-gradethis::grade_this_code()
+sqrt(100)
 ```
 
 :::
@@ -275,7 +271,7 @@ Use `rnrom()` to generate 100 random normal values with a mean of 100 and a stan
 ```{webr}
 #| exercise: use-multiple-args
 #| solution: TRUE
-rnorm(100, mean = 100, sd = 50)
+rnorm(100, mean = 100, sd = 15)
 ```
 
 ```{webr}
@@ -295,7 +291,7 @@ Can you spot the error in the code below? Fix the code and then re-run it.
 ```{webr}
 #| exercise: spot-the-flaw-args
 #| autorun: FALSE
-rnorm(100, mu = 100, sd = 50)
+rnorm(100, mu = 100, sd = 15)
 ```
 
 ::: { .solution exercise="spot-the-flaw-args"}
@@ -306,7 +302,7 @@ rnorm(100, mu = 100, sd = 50)
 ```{webr}
 #| exercise: spot-the-flaw-args
 #| solution: TRUE
-rnorm(100, mean = 100, sd = 50)
+rnorm(100, mean = 100, sd = 15)
 ```
 
 ```{webr}
@@ -439,7 +435,7 @@ gradethis::grade_this_code("Good job! You can learn more about iris by examining
 :::
 
 ::: {.callout-tip title="rm()"}
-What if you accidentally overwrite an object? If that object came with R or one of its packages, you can restore the original version of the object by removing your version with `rm()`. Run `rm()` on `iris` below to restore the iris data set.
+What if you accidentally overwrite an object? If that object came with R or one of its packages, you can restore the original version of the object by removing your version with `rm()`. Run `rm()` on `iris` below to restore the iris data set, examining the contents of iris afterwards to make sure it was restored.
 
 
 ```{webr}
@@ -767,7 +763,7 @@ gradethis::grade_this_code()
 ::: {.callout-tip title="Floating point arithmetic"}
 Computers must use a finite amount of memory to store decimal numbers (which can sometimes require infinite precision). As a result, some decimals can only be saved as very precise approximations. From time to time you'll notice side effects of this imprecision, like below.
 
-Compute the square root of two,square the answer (e.g. multiply the square root of two by the square root of two), and then subtract two from the result. What answer do you expect? What answer do you get?
+Compute the square root of two, square the answer (e.g. multiply the square root of two by the square root of two), and then subtract two from the result. What answer do you expect? What answer do you get?
 
 
 
@@ -786,7 +782,7 @@ Compute the square root of two,square the answer (e.g. multiply the square root 
 #| exercise: floating-points
 #| solution: TRUE
 sqrt(2) * sqrt(2) - 2
-sqrt(2)^2 - 2
+# sqrt(2)^2 - 2 will also work!
 ```
 
 ```{webr}
