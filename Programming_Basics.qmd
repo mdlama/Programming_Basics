@@ -1,0 +1,1085 @@
+---
+title: "Programming basics"
+author: "M. Drew LaMar (modified from [Posit Programming Basics primer](https://github.com/rstudio-education/primers/blob/master/basics/04-Programming-Basics/04-Programming-Basics.Rmd))"
+format: 
+  live-html:
+    toc: true
+    toc-depth: 3
+    section-divs: true
+    webr:
+      cell-options:
+        persist: true
+packages:
+    - tidyverse
+engine: knitr
+theme: readable
+description: "R is easiest to use when you know how the R language works. This tutorial will teach you the implicit background knowledge that informs every piece of R code."
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
+
+<style>
+img.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.callout-tip.callout-titled div.callout-note.callout-titled .callout-icon::before, div.callout-important.callout-titled div.callout-note.callout-titled .callout-icon::before {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="fill: %230c63e4" class="bi bi-info-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 9 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>');
+}
+
+.callout.callout-titled .callout-body>:last-child:not(.sourceCode), .callout.callout-titled .callout-body>div>:last-child:not(.sourceCode) {
+  padding-bottom: .5rem;
+  margin-bottom: -1rem;
+}
+
+.callout.callout-style-default .callout-body {
+  padding-bottom: 1.5em;
+}
+</style>
+
+## Welcome to R
+
+In this tutorial, you'll learn about:
+
+* **functions** and their **arguments**
+* **objects**
+* R's basic **data types** 
+* R's basic data structures including **vectors** and **lists**
+* R's **package system**
+
+## Functions 
+
+{{< video https://vimeo.com/220490105 >}}
+
+::: {.callout-tip title="Run a function"}
+*Can you use the* `sqrt()` *function in the chunk below to compute the square root of 962?*
+
+```{webr}
+#| exercise: run-a-function
+#| autorun: false
+```
+
+::: { .solution exercise="run-a-function"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: run-a-function
+#| solution: true
+sqrt(962)
+```
+
+```{webr}
+#| exercise: run-a-function
+#| check: true
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Examine the function code"}
+Use the code chunk below to examine the code that `sqrt()` runs.
+
+
+```{webr}
+#| exercise: examine-the-code
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="examine-the-code"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: examine-the-code
+#| solution: TRUE
+sqrt
+```
+
+```{webr}
+#| exercise: examine-the-code
+#| check: TRUE
+gradethis::grade_this_code("Good job! sqrt immediately triggers a low level algorithm optimized for performance, so there is not much code to see.")
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="sqrt vs. lm"}
+Compare the code in `sqrt()` to the code in another R function, `lm()`. Examine `lm()`'s code body in the chunk below.
+
+
+```{webr}
+#| exercise: sqrt-vs-lm
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="sqrt-vs-lm"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: sqrt-vs-lm
+#| solution: TRUE
+lm
+```
+
+```{webr}
+#| exercise: sqrt-vs-lm
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Help pages"}
+Wow! `lm()` runs a lot of code. What does it do? Open the help page for `lm()` in the chunk below and find out.
+
+
+```{webr}
+#| exercise: help-page
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="help-page"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: help-page
+#| solution: TRUE
+?lm
+```
+
+```{webr}
+#| exercise: help-page
+#| check: TRUE
+gradethis::grade_this_code("Good job! `lm()` is R's function for fitting basic linear models. No wonder it runs so much code.")
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Code comments"}
+What do you think the chunk below will return? Run it and see. The result should be nothing. R will not run anything on a line after a `#` symbol. This is useful because it lets you write human readable comments in your code: just place the comments after a `#`. Now delete the `#` and re-run the chunk. You should see a result.
+
+
+```{webr}
+#| exercise: code-comments
+#| autorun: FALSE
+# sqrt(962)
+```
+
+::: { .solution exercise="code-comments"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: code-comments
+#| solution: TRUE
+sqrt(962)
+```
+
+```{webr}
+#| exercise: code-comments
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+## Arguments
+
+{{< video https://vimeo.com/220490157 >}}
+
+::: {.callout-tip title="Find function arguments"}
+`rnorm()` is a function that generates random variables from a normal distribution. Find the arguments of `rnorm()`.
+
+
+```{webr}
+#| exercise: use-args
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="use-args"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: use-args
+#| solution: TRUE
+args(rnorm)
+```
+
+```{webr}
+#| exercise: use-args
+#| check: TRUE
+gradethis::grade_this_code("Good job! `n` specifies the number of random normal variables to generate. `mean` and `sd` describe the distribution to generate the random values with." )
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Optional arguments"}
+*Which arguments of* `rnorm` *are optional?*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("mean", "sd"), 
+  options = c("n", "mean", "sd"), 
+  type = "checkbox", 
+  right = "Correct! `n` is not an optional argument because it does not have a default value.", 
+  wrong = "Try again!")
+```
+
+:::
+
+::: {.callout-tip title="Using multiple arguments"}
+Use `rnrom()` to generate 100 random normal values with a mean of 100 and a standard deviation of 15.
+
+
+```{webr}
+#| exercise: use-multiple-args
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="use-multiple-args"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: use-multiple-args
+#| solution: TRUE
+rnorm(100, mean = 100, sd = 50)
+```
+
+```{webr}
+#| exercise: use-multiple-args
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Spot the flaw"}
+Can you spot the error in the code below? Fix the code and then re-run it.
+
+
+```{webr}
+#| exercise: spot-the-flaw-args
+#| autorun: FALSE
+rnorm(100, mu = 100, sd = 50)
+```
+
+::: { .solution exercise="spot-the-flaw-args"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: spot-the-flaw-args
+#| solution: TRUE
+rnorm(100, mean = 100, sd = 50)
+```
+
+```{webr}
+#| exercise: spot-the-flaw-args
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+## Objects
+
+{{< video https://vimeo.com/220493412 >}}
+
+You can choose almost any name you like for an object, as long as the name does not begin with a number or a special character like `+`, `-`, `*`, `/`, `^`, `!`, `@`, or `&`. 
+
+::: {.callout-tip title="Object names"}
+*Which of these would be valid object names?*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("today", "vars", "foo"), 
+  options = c("today", "1st", "+1", "vars", "\\^_^", "foo"), 
+  type = "checkbox", 
+  right = "Remember that the most helpful names will remind you what you put in your object.", 
+  wrong = "Try again!")
+```
+
+:::
+
+::: {.callout-tip title="Using objects"}
+In the code chunk below, save the results of `rnorm(100, mean = 100, sd = 15)` to an object named `data`. Then, on a new line, call the `hist()` function on `data` to plot a histogram of the random values.
+
+
+```{webr}
+#| exercise: using-objects
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="using-objects"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: using-objects
+#| solution: TRUE
+data <- rnorm(100, mean = 100, sd = 15)
+hist(data)
+```
+
+```{webr}
+#| exercise: using-objects
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="What if?"}
+What do you think would happen if you assigned `data` to a new object named `copy`, like this? Run the code and then inspect both `data` and `copy`.
+
+
+```{webr}
+#| exercise: what-if
+#| autorun: FALSE
+data <- rnorm(100, mean = 100, sd = 15)
+copy <- data
+```
+
+::: { .solution exercise="what-if"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: what-if
+#| solution: TRUE
+data <- rnorm(100, mean = 100, sd = 15)
+copy <- data
+data
+copy
+```
+
+```{webr}
+#| exercise: what-if
+#| check: TRUE
+gradethis::grade_this_code("Good job! R saves a copy of the contents in data to copy.")
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Data sets"}
+Objects provide an easy way to store data sets in R. In fact, R comes with many toy data sets pre-loaded. Examine the contents of `iris` to see a classic toy data set. Hint: how could you learn more about the `iris` object?
+
+
+```{webr}
+#| exercise: data-sets
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="data-sets"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: data-sets
+#| solution: TRUE
+iris
+```
+
+```{webr}
+#| exercise: data-sets
+#| check: TRUE
+gradethis::grade_this_code("Good job! You can learn more about iris by examining its help page with `?iris`.")
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="rm()"}
+What if you accidentally overwrite an object? If that object came with R or one of its packages, you can restore the original version of the object by removing your version with `rm()`. Run `rm()` on `iris` below to restore the iris data set.
+
+
+```{webr}
+#| exercise: rm-ex
+#| autorun: FALSE
+iris <- 1
+iris
+```
+
+::: { .solution exercise="rm-ex"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: rm-ex
+#| solution: TRUE
+iris <- 1
+iris
+rm(iris)
+iris
+```
+
+```{webr}
+#| exercise: rm-ex
+#| check: TRUE
+gradethis::grade_this_code("Good job! Unfortunately, `rm()` cannot help you if you overwrite one of your own objects.")
+```
+
+:::
+:::
+:::
+
+## Vectors
+
+{{< video https://vimeo.com/220490316 >}}
+
+::: {.callout-tip title="Create a vector"}
+In the chunk below, create a vector that contains the integers from one to ten.
+
+
+```{webr}
+#| exercise: create-a-vector
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="create-a-vector"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: create-a-vector
+#| solution: TRUE
+c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+```
+
+```{webr}
+#| exercise: create-a-vector
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="The `:` shortcut"}
+If your vector contains a sequence of contiguous integers, you can create it with the `:` shortcut. Run `1:10` in the chunk below. What do you get? What do you suppose `1:20` would return?
+
+
+```{webr}
+#| exercise: vec-shortcut
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="vec-shortcut"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: vec-shortcut
+#| solution: TRUE
+1:10
+```
+
+```{webr}
+#| exercise: vec-shortcut
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Element extraction"}
+You can extract any element of a vector by placing a pair of brackets behind the vector. Inside the brackets place the number of the element that you'd like to extract. For example, `vec[3]` would return the third element of the vector named `vec`. Use the chunk below to extract the fourth element of `vec`.
+
+
+```{webr}
+#| exercise: element-extraction
+#| autorun: FALSE
+vec <- c(1, 2, 4, 8, 16)
+```
+
+::: { .solution exercise="element-extraction"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: element-extraction
+#| solution: TRUE
+vec <- c(1, 2, 4, 8, 16)
+vec[4]
+```
+
+```{webr}
+#| exercise: element-extraction
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Vector subsetting"}
+You can also use `[]` to extract multiple elements of a vector. Place the vector `c(1,2,5)` between the brackets below. What does R return?
+
+
+```{webr}
+#| exercise: vector-subsetting
+#| autorun: FALSE
+vec <- c(1, 2, 4, 8, 16)
+vec[]
+```
+
+::: { .solution exercise="vector-subsetting"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: vector-subsetting
+#| solution: TRUE
+vec <- c(1, 2, 4, 8, 16)
+vec[c(1,2,5)]
+```
+
+```{webr}
+#| exercise: vector-subsetting
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Names"}
+If the elements of your vector have names, you can extract them by name. To do so place a name or vector of names in the brackets behind a vector. Surround each name with quotation marks, e.g. `vec2[c("alpha", "beta")]`.
+
+Extract the element named gamma from the vector below.
+
+```{webr}
+#| exercise: names
+#| autorun: FALSE
+vec2 <- c(alpha = 1, beta = 2, gamma = 3)
+```
+
+::: { .solution exercise="names"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: names
+#| solution: TRUE
+vec2 <- c(alpha = 1, beta = 2, gamma = 3)
+vec2["gamma"]
+```
+
+```{webr}
+#| exercise: names
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Vectorised operations"}
+Predict what the code below will return. Then look at the result.
+
+
+```{webr}
+#| exercise: vectorized-operations
+#| autorun: FALSE
+c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) + c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+```
+
+::: { .solution exercise="vectorised-operations"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: vectorised-operations
+#| solution: TRUE
+c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) + c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+```
+
+```{webr}
+#| exercise: vectorised-operations
+#| check: TRUE
+gradethis::grade_this_code("Good job! Like many R functions, R's math operators are vectorised: they're designed to work with vectors by repeating the operation for each pair of elements.")
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Vector recycling"}
+Predict what the code below will return. Then look at the result.
+
+
+```{webr}
+#| exercise: vector-recycling
+#| autorun: FALSE
+1 + c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+```
+
+::: { .solution exercise="vector-recycling"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: vector-recycling
+#| solution: TRUE
+1 + c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+```
+
+```{webr}
+#| exercise: vector-recycling
+#| check: TRUE
+gradethis::grade_this_code("Good job! Whenever you try to work with vectors of varying lengths (recall that `1` is a vector of length one), R will repeat the shorter vector as needed to compute the result.")
+```
+
+:::
+:::
+:::
+
+## Types
+
+{{< video https://vimeo.com/220490241 >}}
+
+::: {.callout-tip title="Atomic types"}
+*Which of these is not an atomic data type?*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("simple"), 
+  options = c("numeric/double", "integer", "character", "logical", "complex", "raw", "simple"), 
+  type = "checkbox", 
+  right = "Correct!", 
+  wrong = "Try again!")
+```
+
+:::
+
+::: {.callout-tip title="What type?"}
+*What type of data is `"1L"`?*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("character"), 
+  options = c("numeric/double", "integer", "character", "logical"), 
+  type = "checkbox", 
+  right = "Correct!", 
+  wrong = "Try again! If you chose 'integer', note that `1L` would be an integer, but look a little closer.")
+```
+
+:::
+
+::: {.callout-tip title="Integers"}
+Create a vector of integers from one to five. Can you imagine why you might want to use integers instead of numbers/doubles?
+
+
+```{webr}
+#| exercise: integers
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="integers"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: integers
+#| solution: TRUE
+c(1L, 2L, 3L, 4L, 5L)
+```
+
+```{webr}
+#| exercise: integers
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Floating point arithmetic"}
+Computers must use a finite amount of memory to store decimal numbers (which can sometimes require infinite precision). As a result, some decimals can only be saved as very precise approximations. From time to time you'll notice side effects of this imprecision, like below.
+
+Compute the square root of two,square the answer (e.g. multiply the square root of two by the square root of two), and then subtract two from the result. What answer do you expect? What answer do you get?
+
+
+
+```{webr}
+#| exercise: floating-points
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="floating-points"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: floating-points
+#| solution: TRUE
+sqrt(2) * sqrt(2) - 2
+sqrt(2)^2 - 2
+```
+
+```{webr}
+#| exercise: floating-points
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Vectors"}
+*How many types of data can you put into a single vector?*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("1"), 
+  options = c("1", "6", "As many as you like"), 
+  type = "radio", 
+  right = "Correct!", 
+  wrong = "Try again!")
+```
+
+:::
+
+::: {.callout-tip title="Character or object?"}
+One of the most common mistakes in R is to call an object when you mean to call a character string and vice versa.
+
+*Which of these are object names? What is the difference between object names and character strings?*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("foo", "mu", "a"), 
+  options = c("foo", '"num"', "mu", '"sigma"', '"data"', "a"), 
+  type = "checkbox", 
+  right = "Character strings are surrounded by quotation marks, object names are not.", 
+  wrong = "Try again!")
+```
+
+:::
+
+## Lists 
+
+{{< video https://vimeo.com/220490360 >}}
+
+::: {.callout-tip title="Lists vs. vectors"}
+*Which data structure(s) could you use to store these pieces of data in the same object? `1001`, `TRUE`, `"stories"`.*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("a list"), 
+  options = c("a vector", "a list", "neither"), 
+  type = "checkbox", 
+  right = "Correct!", 
+  wrong = "Try again!")
+```
+
+:::
+
+::: {.callout-tip title="Make a list"}
+Make a list that contains the elements `1001`, `TRUE`, and `"stories"`. Give each element a name.
+
+
+```{webr}
+#| exercise: make-a-list
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="make-a-list"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: make-a-list
+#| solution: TRUE
+list(number = 1001, logical = TRUE, string = "stories")
+```
+
+```{webr}
+#| exercise: make-a-list
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Extract an element"}
+Extract the number 1001 from the list below.
+
+
+```{webr}
+#| exercise: extract-an-element
+#| autorun: FALSE
+things <- list(number = 1001, logical = TRUE, string = "stories")
+```
+
+::: { .solution exercise="extract-an-element"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: extract-an-element
+#| solution: TRUE
+things <- list(number = 1001, logical = TRUE, string = "stories")
+things$number
+```
+
+```{webr}
+#| exercise: extract-an-element
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Data Frames"}
+You can make a data frame with the `data.frame()` function, which works similar to `c()`, and `list()`. Assemble the vectors below into a data frame with the column names `numbers`, `logicals`, `strings`.
+
+
+```{webr}
+#| exercise: data-frames
+#| autorun: FALSE
+nums <- c(1, 2, 3, 4)
+logs <- c(TRUE, TRUE, FALSE, TRUE)
+strs <- c("apple", "banana", "carrot", "duck")
+```
+
+::: { .solution exercise="data-frames"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: data-frames
+#| solution: TRUE
+nums <- c(1, 2, 3, 4)
+logs <- c(TRUE, TRUE, FALSE, TRUE)
+strs <- c("apple", "banana", "carrot", "duck")
+data.frame(numbers = nums, logicals = logs, strings = strs)
+```
+
+```{webr}
+#| exercise: data-frames
+#| check: TRUE
+gradethis::grade_this_code("Good Job. When you make a data frame, you must follow one rule: each column vector should be the same length.")
+```
+
+:::
+:::
+:::
+
+::: {.callout-tip title="Extract a column"}
+Given that a data frame is a type of list (with named elements), how could you extract the strings column of the following `df` data frame?
+
+```r
+nums <- c(1, 2, 3, 4)
+logs <- c(TRUE, TRUE, FALSE, TRUE)
+strs <- c("apple", "banana", "carrot", "duck")
+df <- data.frame(numbers = nums, logicals = logs, strings = strs)
+```
+
+Extract the strings column below.
+
+```{webr}
+#| exercise: extract-a-column
+#| setup: TRUE
+nums <- c(1, 2, 3, 4)
+logs <- c(TRUE, TRUE, FALSE, TRUE)
+strs <- c("apple", "banana", "carrot", "duck")
+df <- data.frame(numbers = nums, logicals = logs, strings = strs)
+```
+
+```{webr}
+#| exercise: extract-a-column
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="extract-a-column"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: extract-a-column
+#| solution: TRUE
+df$strings
+```
+
+```{webr}
+#| exercise: extract-a-column
+#| check: TRUE
+gradethis::grade_this_code()
+```
+
+:::
+:::
+:::
+
+## Packages
+
+{{< video https://vimeo.com/220490447 >}}
+
+::: {.callout-tip title="A common error"}
+*What does this common error message suggest? `object _____ does not exist.`*
+
+```{r}
+#| echo: FALSE
+library(checkdown)
+check_question(c("Either"), 
+  options = c("You misspelled your object name", "You've forgot to load the package that ____ comes in", "Either"), 
+  type = "radio", 
+  right = "Correct!", 
+  wrong = "Try again!")
+```
+
+:::
+
+::: {.callout-tip title="Load a package"}
+In the code chunk below, load the `tidyverse` package. Whenever you load a package R will also load all of the packages that the first package depends on. `tidyverse` takes advantage of this to create a shortcut for loading several common packages at once. Whenever you load `tidyverse`, `tidyverse` also loads `ggplot2`, `dplyr`, `tibble`, `tidyr`, `readr`, and `purrr`.
+
+
+```{webr}
+#| exercise: load-a-package
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="load-a-package"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: load-a-package
+#| solution: TRUE
+library(tidyverse)
+```
+
+```{webr}
+#| exercise: load-a-package
+#| check: TRUE
+gradethis::grade_this_code("Good job! R will keep the packages loaded until you close your R session. When you re-open R, you'll need to reload you packages.")
+```
+
+:::
+:::
+:::
+
+Did you know, `library()` is a special function in R? You can pass `library()` a package name in quotes, like `library("tidyverse")`, or not in quotes, like `library(tidyverse)`---both will work! That's often not the case with R functions.
+
+In general, you should always use quotes unless you are writing the _name_ of something that is already loaded into R's memory, like a function, vector, or data frame.
+
+::: {.callout-tip title="Install packages"}
+But what if the package that you want to load is not installed on your computer? How would you install the dplyr package on your own computer?
+
+
+```{webr}
+#| exercise: install-packages
+#| autorun: FALSE
+
+```
+
+::: { .solution exercise="install-packages"}
+::: { .callout-note collapse="false"}
+
+## Solution
+
+```{webr}
+#| exercise: install-packages
+#| solution: TRUE
+install.packages("dplyr")
+```
+
+```{webr}
+#| exercise: install-packages
+#| check: TRUE
+gradethis::grade_this_code("Good job! You only need to install a package once, unless you wish to update your local copying by reinstalling the package. Notice that `install.packages()` _always_ requires quotes around the package name.")
+```
+
+:::
+:::
+:::
+
+*Congratulations*. You now have a formal sense for how the basics of R work. Although you may think of your self as a Data Scientist, this brief Computer Science background will help you as you analyze data. Whenever R does something unexpected, you can apply your knowledge of how R works to figure out what went wrong.

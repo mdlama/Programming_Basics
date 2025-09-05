@@ -1,0 +1,12 @@
+### R ###
+# History files
+.Rhistory
+
+# Session Data files
+.RData
+
+# R package: bookdown caching files
+.Rproj.user
+
+.quarto
+/.quarto/
